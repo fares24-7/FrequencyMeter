@@ -1,12 +1,12 @@
 # CPLD Frequency Meter
 
-A hardware-based digital frequency measurement system designed for CPLD architectures. The repository includes VHDL/Verilog source implementations, hardware pin constraints, and Proteus simulation archives.
+A hardware-based digital frequency measurement system designed for CPLD architectures. The repository includes VHDL/Verilog source implementations, hardware pin constraints, Proteus schematic diagrams, and project simulation archives.
 
-## Hardware Simulation
+## Hardware Schematic & Circuit Design
 
-Below is the verified waveform output showing signal timing, gating windows, and pulse count latching:
+Below is the complete hardware schematic illustrating the XC9572XL CPLD pin connections, LM016L LCD display wiring, 10 MHz crystal oscillator divider circuit, and FT232RL programmer interface:
 
-![Simulation Waveform](docs/cpld%20simu.jpg)
+![Hardware Schematic](<docs/cpld simu.jpg>)
 
 ## File Directory & Explanations
 
@@ -20,23 +20,23 @@ Below is the verified waveform output showing signal timing, gating windows, and
 * **`led_timer.svf`**: SVF bitstream configured for driving timer and status LED indicators on hardware.
 
 ### `docs/` — Schematics & Simulation Data
-* **`cpld simu.jpg`**: Captured waveform screenshot displaying real-time frequency measurement signals.
-* **`cpld simu.PDF`**: Architectural document and detailed schematic prints.
-* **`cpld simu.pdsprj.zip`**: Archived Proteus Design Suite workspace containing the interactive circuit testbench.
+* **`cpld simu.jpg`**: Proteus circuit schematic export showing hardware components, pin maps, and clock division wiring.
+* **`cpld simu.PDF`**: High-resolution vector print of the schematic circuit.
+* **`cpld simu.pdsprj.zip`**: Archived Proteus Design Suite project file containing the interactive circuit schematic and simulation environment.
 
-## Architecture & How It Works
+## System Architecture
 
-1. **Gate Window Generation**: An internal clock divider scales down system frequency to create an accurate measurement sampling period.
-2. **Dual-Counter Pulse Accumulation**: Dual counters track rising edge pulses of incoming high-frequency signals while gate controls remain active.
-3. **Latch & Register Output**: Active counts latch to internal output registers at the end of every gate interval before counter reset cycles trigger.
+* **Clock Source & Division**: A 10 MHz crystal oscillator feeds a 4060 binary counter/divider (using pin Q3 to divide by 16) to generate a 625 kHz reference clock for the CPLD logic.
+* **CPLD Target**: Built for the Xilinx XC9572XL CPLD (`VQG44` package) to run sampling gating windows and target signal frequency counting.
+* **Display Interface**: Direct parallel wiring from CPLD I/O ports to an LM016L character LCD module for live frequency readouts.
+* **Programming Interface**: FT232RL USB interface mapping JTAG signals (`TCK`, `TDI`, `TDO`, `TMS`) directly to the CPLD for flashing via `.svf` files.
 
 ## Getting Started
 
 ### Prerequisites
 * Xilinx ISE WebPACK / Intel Quartus Prime
-* Labcenter Proteus (for `.pdsprj` simulation)
+* Labcenter Proteus (for opening `.pdsprj` schematic files)
 
 ### Simulation Setup
 1. Extract `docs/cpld simu.pdsprj.zip` into your working folder.
-2. Load `src/frequencyDetector.vhdl` inside your EDA platform or Proteus VSM simulator.
-3. Run simulation to review register counts matching `docs/cpld simu.jpg`.
+2. Open the project in Labcenter Proteus to review the full schematic and run interactive hardware simulation.

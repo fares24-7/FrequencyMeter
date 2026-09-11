@@ -1,42 +1,44 @@
 # CPLD Frequency Meter
 
-A hardware-based digital frequency measurement system designed for CPLD architectures. The repository includes VHDL/Verilog source implementations, hardware pin constraints, Proteus schematic diagrams, and project simulation archives.
+A digital frequency measurement system built for a CPLD using VHDL and Verilog. It measures incoming signal frequencies via synchronous gating logic and displays results on an LCD screen.
 
-## Hardware Schematic & Circuit Design
+---
 
-Below is the complete hardware schematic illustrating the XC9572XL CPLD pin connections, LM016L LCD display wiring, 10 MHz crystal oscillator divider circuit, and FT232RL programmer interface:
+## Hardware Schematic
+
+Below is the circuit setup featuring the Xilinx XC9572XL CPLD, 10 MHz reference clock divider, LCD screen, and FT232RL programmer interface:
 
 ![Hardware Schematic](<docs/cpld simu.jpg>)
 
-## File Directory & Explanations
+---
 
-### `src/` — Hardware Logic Source
-* **`frequencyDetector.vhdl`**: Core VHDL implementation containing top-level module entity, clock divider, dual-counter gating mechanism, and register latches.
-* **`FreqDetector.v`**: Verilog translation of the main frequency detection hardware logic.
+## Repository Structure
 
-### `constraints/` — Hardware & Programming Specifications
-* **`lcd_driver.ucf`**: User Constraints File defining physical pin assignments on the CPLD for LCD segment display output.
-* **`lcd_driver.svf`**: Serial Vector Format file for directly flashing compiled LCD interface logic onto the CPLD.
-* **`led_timer.svf`**: SVF bitstream configured for driving timer and status LED indicators on hardware.
+* **`src/`**
+  * `frequencyDetector.vhdl`: Core VHDL code containing clock division, dual counters, and data latches.
+  * `FreqDetector.v`:         Equivalent Verilog source implementation.
 
-### `docs/` — Schematics & Simulation Data
-* **`cpld simu.jpg`**: Proteus circuit schematic export showing hardware components, pin maps, and clock division wiring.
-* **`cpld simu.PDF`**: High-resolution vector print of the schematic circuit.
-* **`cpld simu.pdsprj.zip`**: Archived Proteus Design Suite project file containing the interactive circuit schematic and simulation environment.
+* **`constraints/`**
+  * `lcd_driver.ucf`: Pin mapping file connecting CPLD signals to the LCD screen.
+  * `lcd_driver.svf`: Programmed bitstream for the LCD interface.
+  * `led_timer.svf`:  Flashing file for status LEDs and timing control.
 
-## System Architecture
+* **`docs/`**
+  * `cpld simu.jpg`:        Schematic capture image.
+  * `cpld simu.PDF`:        High-resolution vector schematic print.
+  * `cpld simu.pdsprj.zip`: Proteus project archive for interactive circuit simulation.
 
-* **Clock Source & Division**: A 10 MHz crystal oscillator feeds a 4060 binary counter/divider (using pin Q3 to divide by 16) to generate a 625 kHz reference clock for the CPLD logic.
-* **CPLD Target**: Built for the Xilinx XC9572XL CPLD (`VQG44` package) to run sampling gating windows and target signal frequency counting.
-* **Display Interface**: Direct parallel wiring from CPLD I/O ports to an LM016L character LCD module for live frequency readouts.
-* **Programming Interface**: FT232RL USB interface mapping JTAG signals (`TCK`, `TDI`, `TDO`, `TMS`) directly to the CPLD for flashing via `.svf` files.
+---
 
-## Getting Started
+## Technical Summary
 
-### Prerequisites
-* Xilinx ISE WebPACK / Intel Quartus Prime
-* Labcenter Proteus (for opening `.pdsprj` schematic files)
+1. **Clock Reference**:    A 10 MHz crystal oscillator connects to a 4060 binary divider (pin Q3) to feed a stable 625 kHz clock into the CPLD.
+2. **Measurement Logic**:  Dual counters sample incoming signal pulses during a gated timing window, latching the result to registers before resetting.
+3. **Display & Flashing**: Output count is sent via parallel I/O to an LM016L LCD. Programming is done through JTAG using the FT232RL USB interface and `.svf` files.
 
-### Simulation Setup
-1. Extract `docs/cpld simu.pdsprj.zip` into your working folder.
-2. Open the project in Labcenter Proteus to review the full schematic and run interactive hardware simulation.
+---
+
+## How to Run
+
+1. Extract `docs/cpld simu.pdsprj.zip`.
+2. Open `cpld simu.pdsprj` in Labcenter Proteus to simulate the schematic and inspect LCD readouts.

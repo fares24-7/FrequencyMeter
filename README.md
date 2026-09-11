@@ -24,8 +24,8 @@ Below is the circuit setup featuring the Xilinx XC9572XL CPLD, 10 MHz reference 
   * `led_timer.svf`:  Flashing file for status LEDs and timing control.
 
 * **`docs/`**
-  * `cpld simu.jpg`:        Schematic capture image.
-  * `cpld simu.PDF`:        High-resolution vector schematic print.
+  * `cpld simu.jpg`
+  * `cpld simu.PDF`
   * `cpld simu.pdsprj.zip`: Proteus project archive for interactive circuit simulation.
 
 ---
